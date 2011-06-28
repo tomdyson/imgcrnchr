@@ -10,7 +10,7 @@ MEDIA_URL = ''
 SECRET_KEY = '&s6=1(=*qj9fw#1*(&b!!3d^gs5m60$c^!15jtu1ht9bf#2fsx'
 TEMPLATE_LOADERS = ()
 MIDDLEWARE_CLASSES = ()
-ROOT_URLCONF = 'imgcrnch.urls'
+ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = ()
 INSTALLED_APPS = ()
 
