@@ -10,7 +10,7 @@ def crunch(request, crunch_factor, image_url):
     # ignore non-jpgs
     if image_url.endswith('.jpg'):
         image_name = image_url.split("/")[-1]
-        image_cache_path = os.path.join(settings.IMG_CACHE_PATH, image_name)
+        image_cache_path = os.path.join(settings.IMG_CACHE_PATH, str(crunch_factor), image_name)
         # load from local fs if available
         if os.path.exists(image_cache_path):
             image_data = open(image_cache_path, "rb").read()
@@ -23,7 +23,11 @@ def crunch(request, crunch_factor, image_url):
         except IOError:
             return HttpResponse("Sorry, we couldn't find an image at %s" % image_url)
         # cache compressed version
-        im.save(image_cache_path, quality=crunch_factor)
+        try:
+            im.save(image_cache_path, quality=crunch_factor)
+        except IOError: # cache dir may not exist
+            os.mkdir(os.path.join(settings.IMG_CACHE_PATH, str(crunch_factor)))
+            im.save(image_cache_path, quality=crunch_factor)
         # serve up compressed version
         response = HttpResponse(mimetype="image/jpeg")
         im.save(response, quality=crunch_factor, format="jpeg")
